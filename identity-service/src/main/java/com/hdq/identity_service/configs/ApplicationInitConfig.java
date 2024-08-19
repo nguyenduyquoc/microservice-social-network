@@ -1,4 +1,3 @@
-/*
 package com.hdq.identity_service.configs;
 
 import com.hdq.identity_service.dtos.requests.ProfileFormRequest;
@@ -6,6 +5,7 @@ import com.hdq.identity_service.entities.AccountEntity;
 import com.hdq.identity_service.entities.RoleEntity;
 import com.hdq.identity_service.repositories.AccountRepositoryImpl;
 import com.hdq.identity_service.repositories.RoleRepositoryImpl;
+import com.hdq.identity_service.repositories.http_client.ProfileClient;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -28,6 +28,7 @@ public class ApplicationInitConfig {
     PasswordEncoder passwordEncoder;
     AccountRepositoryImpl accountRepository;
     RoleRepositoryImpl roleRepository;
+    ProfileClient profileClient;
 
     @Bean
     @Transactional
@@ -62,12 +63,10 @@ public class ApplicationInitConfig {
                         .dob(LocalDate.parse("2001-04-29"))
                         .city("Ha Tinh")
                         .build();
-
+                profileClient.createProfile(profile);
                 log.warn("admin user has been created with default password: password, please change it");
             }
         };
     }
 
 }
-*/
-
