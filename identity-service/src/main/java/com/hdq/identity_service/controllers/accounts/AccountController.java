@@ -13,6 +13,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -35,12 +36,14 @@ public class AccountController implements BaseRestController<AccountEntity> {
     }
 
     // admin
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'ADMIN')")
     @GetMapping(path = "")
     public BaseResponse index(BaseRequest request) {
         return BaseRestController.super.index(request);
     }
 
     // admin
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'ADMIN')")
     @GetMapping(path = "/{id}")
     public BaseResponse show(@PathVariable("id") Long id) {
         return BaseRestController.super.show(id);
