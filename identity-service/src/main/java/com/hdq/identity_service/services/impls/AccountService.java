@@ -4,6 +4,7 @@ import com.hdq.identity_service.controllers.accounts.RegisterFormRequest;
 import com.hdq.identity_service.core.BaseRepository;
 import com.hdq.identity_service.dtos.AccountDTO;
 import com.hdq.identity_service.dtos.RoleDTO;
+import com.hdq.identity_service.dtos.requests.ProfileFormRequest;
 import com.hdq.identity_service.entities.AccountEntity;
 import com.hdq.identity_service.entities.RoleEntity;
 import com.hdq.identity_service.exception.CustomException;
@@ -12,6 +13,7 @@ import com.hdq.identity_service.mappers.AccountMapper;
 import com.hdq.identity_service.mappers.RoleMapper;
 import com.hdq.identity_service.repositories.AccountRepositoryImpl;
 import com.hdq.identity_service.repositories.RoleRepositoryImpl;
+import com.hdq.identity_service.repositories.http_client.ProfileClient;
 import com.hdq.identity_service.services.IAccountService;
 import com.hdq.identity_service.utils.ArrayUtil;
 import com.hdq.identity_service.utils.SetUtil;
@@ -19,6 +21,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.context.MessageSource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -38,6 +41,8 @@ public class AccountService implements IAccountService {
     RoleMapper roleMapper;
     PasswordEncoder passwordEncoder;
     MessageSource messageSource;
+    ModelMapper modelMapper;
+    ProfileClient profileClient;
 
     @Override
     public BaseRepository<AccountEntity> getRepository() {
@@ -63,6 +68,9 @@ public class AccountService implements IAccountService {
         userAccount.setRoles(Collections.singleton(adminRole));
         userAccount = repository.save(userAccount);
 
+        // send api to profile service
+        sendApiToProfileService(userAccount, request);
+
         return (AccountDTO) mapper.toDTO(userAccount);
 
     }
@@ -85,6 +93,9 @@ public class AccountService implements IAccountService {
 
         adminAccount.setRoles(roles);
         adminAccount = repository.save(adminAccount);
+
+        // send api to profile service
+        sendApiToProfileService(adminAccount, request);
 
         return (AccountDTO) mapper.toDTO(adminAccount);
     }
@@ -158,6 +169,14 @@ public class AccountService implements IAccountService {
         return account;
     }
 
+    private void sendApiToProfileService(AccountEntity account, RegisterFormRequest request) {
+        ProfileFormRequest profileFormRequest = modelMapper.map(request, ProfileFormRequest.class);
+        profileFormRequest.setAccountId(account.getId());
+        profileClient.createProfile(profileFormRequest);
+        log.info("created profile successfully");
+    }
+
+
     private AccountEntity findAccountById(Long id) throws NotFoundEntityException{
         return repository.findById(id).orElseThrow(
                 () -> new NotFoundEntityException("Tài khoản", id)
@@ -166,3 +185,4 @@ public class AccountService implements IAccountService {
     }
 
 }
+
