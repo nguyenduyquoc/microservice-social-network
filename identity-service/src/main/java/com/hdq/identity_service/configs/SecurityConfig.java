@@ -37,8 +37,9 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http.authorizeHttpRequests(request -> request
-                .requestMatchers("/api/modules/auth/**").permitAll()
-                .requestMatchers(HttpMethod.POST,"/api/modules/admin/v1/accounts").permitAll()
+                .requestMatchers("/api/v1/auth/**").permitAll()
+                .requestMatchers(HttpMethod.POST,"/api/v1/accounts/sign-up-admin").permitAll()
+                .requestMatchers(HttpMethod.POST,"/api/v1/accounts/sign-up-user").permitAll()
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .anyRequest().authenticated());
 

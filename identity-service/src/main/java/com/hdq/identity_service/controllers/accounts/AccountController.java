@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(value = Constants.REQUEST_MAPPING_PREFIX + Constants.ADMIN_MODULE_PREFIX + Constants.VERSION_API_V1 + "/accounts")
+@RequestMapping(value = Constants.REQUEST_MAPPING_PREFIX + Constants.VERSION_API_V1 + "/accounts")
 public class AccountController implements BaseRestController<AccountEntity> {
 
     IAccountService service;
@@ -47,9 +47,15 @@ public class AccountController implements BaseRestController<AccountEntity> {
     }
 
 
-    @PostMapping(path = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public BaseResponse create(@Valid @RequestBody RegisterFormRequest request) {
+    @PostMapping(path = "/sign-up-user", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public BaseResponse createUser(@Valid @RequestBody RegisterFormRequest request) {
         return BaseResponse.created(service.createUser(request));
+    }
+
+    @PostMapping(value = "/sign-up-admin", produces = MediaType.APPLICATION_JSON_VALUE)
+    public BaseResponse createAdmin(@Valid @RequestBody RegisterFormRequest request){
+
+        return BaseResponse.created(service.createAdmin(request));
     }
 
 

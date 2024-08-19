@@ -1,10 +1,8 @@
 package com.hdq.identity_service.controllers.auth;
 
-import com.hdq.identity_service.controllers.accounts.RegisterFormRequest;
 import com.hdq.identity_service.core.BaseResponse;
 import com.hdq.identity_service.dtos.requests.*;
 import com.hdq.identity_service.services.AuthenticationService;
-import com.hdq.identity_service.services.IAccountService;
 import com.hdq.identity_service.utils.Constants;
 import com.nimbusds.jose.JOSEException;
 import jakarta.validation.Valid;
@@ -20,14 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
 import java.text.ParseException;
 
 @RestController
-@RequestMapping(value = Constants.REQUEST_MAPPING_PREFIX + Constants.AUTH_MODULE_PREFIX + Constants.VERSION_API_V1)
+@RequestMapping(value = Constants.REQUEST_MAPPING_PREFIX + Constants.VERSION_API_V1 + "/auth")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
 public class AuthController {
 
     AuthenticationService authenticationService;
-    IAccountService accountService;
-
 
     @PostMapping("/log-in")
     public BaseResponse login(@Valid @RequestBody LoginFormRequest userLogin){
@@ -39,12 +35,6 @@ public class AuthController {
     public BaseResponse checkToken(@RequestBody IntrospectRequest token) throws ParseException, JOSEException {
         var isValid = authenticationService.introspect(token);
         return BaseResponse.success("Check token successfully", isValid);
-    }
-
-    @PostMapping(value = "/sign-up-admin", produces = MediaType.APPLICATION_JSON_VALUE)
-    public BaseResponse create(@Valid @RequestBody RegisterFormRequest request){
-
-        return BaseResponse.created(accountService.createAdmin(request));
     }
 
     @PostMapping(value = "/log-out", produces = MediaType.APPLICATION_JSON_VALUE)

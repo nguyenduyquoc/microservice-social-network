@@ -14,15 +14,16 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = Constants.REQUEST_MAPPING_PREFIX  + Constants.VERSION_API_V1)
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
-public class AccountProfileController {
+public class InternalAccountProfileController {
 
     IAccountProfileService accountProfileService;
 
 
-    @GetMapping(path = "/accounts/{profileId}")
-    BaseResponse getAccountProfile(@PathVariable(name = "profileId") String id) {
+    @PostMapping(path = "/internal/accounts")
+    BaseResponse createAccountProfile(@Valid @RequestBody AccountProfileCreateFormRequest request) {
 
-        return BaseResponse.success(accountProfileService.getProfile(id));
+        return BaseResponse.created(accountProfileService.createProfile(request));
     }
+
 
 }
