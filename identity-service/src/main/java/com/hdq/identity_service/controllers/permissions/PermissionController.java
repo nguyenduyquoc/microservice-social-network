@@ -15,7 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = Constants.REQUEST_MAPPING_PREFIX + Constants.ADMIN_MODULE_PREFIX + Constants.VERSION_API_V1 + "/permissions")
+@RequestMapping(value = Constants.REQUEST_MAPPING_PREFIX + Constants.VERSION_API_V1 + "/permissions")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
 public class PermissionController implements BaseRestController<PermissionEntity> {

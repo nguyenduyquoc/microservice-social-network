@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(value = Constants.REQUEST_MAPPING_PREFIX + Constants.ADMIN_MODULE_PREFIX + Constants.VERSION_API_V1 + "/roles")
+@RequestMapping(value = Constants.REQUEST_MAPPING_PREFIX + Constants.VERSION_API_V1 + "/roles")
 public class RoleController implements BaseRestController<RoleEntity> {
 
     IRoleService service;
