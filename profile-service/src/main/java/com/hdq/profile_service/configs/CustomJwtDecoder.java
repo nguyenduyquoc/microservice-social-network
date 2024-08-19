@@ -1,7 +1,10 @@
-package com.hdq.identity_service.configs;
+package com.hdq.profile_service.configs;
 
 import com.nimbusds.jwt.SignedJWT;
-import org.springframework.security.oauth2.jwt.*;
+import org.springframework.security.oauth2.jwt.BadJwtException;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.JwtException;
 import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
