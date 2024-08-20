@@ -51,3 +51,7 @@ CREATE TABLE role_permission_mapping (
                                          FOREIGN KEY (role_id) REFERENCES roles(id),
                                          FOREIGN KEY (permission_id) REFERENCES permissions(id)
 );
+CREATE TABLE tokens (
+                        id VARCHAR(36) NOT NULL PRIMARY KEY,
+                        expiry_date DATE
+);
