@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel>
+      <module name="api-gateway" target="21" />
+      <module name="identity-service" target="21" />
+      <module name="post-service" target="21" />
+      <module name="profile-service" target="21" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
