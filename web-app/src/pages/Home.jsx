@@ -16,7 +16,7 @@ export default function Home() {
 
       console.log(data);
 
-      setUserDetails(data.result);
+      setUserDetails(data.data);
     } catch (error) {}
   };
 
@@ -55,33 +55,8 @@ export default function Home() {
                 mb: "40px",
               }}
             >
-              Welcome back to Devteria, {userDetails.username} !
+              Welcome back to Hdquoc, {userDetails.lastName} !
             </Typography>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "flex-start",
-                width: "100%", // Ensure content takes full width
-              }}
-            >
-              <Typography
-                sx={{
-                  fontSize: 14,
-                  fontWeight: 600,
-                }}
-              >
-                User Id
-              </Typography>
-              <Typography
-                sx={{
-                  fontSize: 14,
-                }}
-              >
-                {userDetails.id}
-              </Typography>
-            </Box>
             <Box
               sx={{
                 display: "flex",

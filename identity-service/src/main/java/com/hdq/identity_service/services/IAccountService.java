@@ -20,5 +20,6 @@ public interface IAccountService extends BaseService<AccountEntity> {
 
     AccountEntity detachRolesAvailable(Long accountId, Long roleId) throws NotFoundEntityException;
 
+    Object getMyInfo() throws NotFoundEntityException;
 
 }

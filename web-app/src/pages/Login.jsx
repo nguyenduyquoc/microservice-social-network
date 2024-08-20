@@ -28,7 +28,7 @@ export default function Login() {
 
   const handleClick = () => {
     alert(
-      "Please refer to Oauth2 series for this implemetation guidelines. https://www.youtube.com/playlist?list=PL2xsxmVse9IbweCh6QKqZhousfEWabSeq"
+      "To be continue"
     );
   };
 
@@ -38,7 +38,7 @@ export default function Login() {
     }
   }, [navigate]);
 
-  const [username, setUsername] = useState("");
+  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [snackBarOpen, setSnackBarOpen] = useState(false);
   const [snackBarMessage, setSnackBarMessage] = useState("");
@@ -47,7 +47,7 @@ export default function Login() {
     event.preventDefault();
 
     try {
-      const response = await logIn(username, password);
+      const response = await logIn(phone, password);
       console.log("Response body:", response.data);
       navigate("/");
     } catch (error) {
@@ -93,7 +93,7 @@ export default function Login() {
         >
           <CardContent>
             <Typography variant="h5" component="h1" gutterBottom>
-              Welcome to Devtetia
+              Welcome to Hdquoc
             </Typography>
             <Box
               component="form"
@@ -105,12 +105,12 @@ export default function Login() {
               onSubmit={handleSubmit}
             >
               <TextField
-                label="Username"
+                label="Phone number"
                 variant="outlined"
                 fullWidth
                 margin="normal"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
               />
               <TextField
                 label="Password"

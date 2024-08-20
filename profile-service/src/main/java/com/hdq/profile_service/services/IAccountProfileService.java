@@ -13,4 +13,6 @@ public interface IAccountProfileService {
     AccountProfileDTO getProfile(String id) throws NotFoundEntityException;
 
     List<AccountProfileDTO> getAllProfiles();
+
+    AccountProfileDTO getProfileByUserId(Long id);
 }

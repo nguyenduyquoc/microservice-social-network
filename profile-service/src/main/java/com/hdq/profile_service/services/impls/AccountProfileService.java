@@ -47,4 +47,10 @@ public class AccountProfileService implements IAccountProfileService {
             modelMapper.map(accountProfile, AccountProfileDTO.class)
         ).toList();
     }
+
+    @Override
+    public AccountProfileDTO getProfileByUserId(Long id) {
+        AccountProfileEntity accountProfile = repository.findByAccountId(id);
+        return modelMapper.map(accountProfile, AccountProfileDTO.class);
+    }
 }

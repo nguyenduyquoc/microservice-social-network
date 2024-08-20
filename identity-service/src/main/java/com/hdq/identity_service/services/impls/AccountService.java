@@ -23,6 +23,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.MessageSource;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -155,6 +156,17 @@ public class AccountService implements IAccountService {
         account.setRoles(roleEntities);
 
         return repository.save(account);
+    }
+
+    @Override
+    public Object getMyInfo() throws NotFoundEntityException {
+        var context = SecurityContextHolder.getContext();
+        String name = context.getAuthentication().getName();
+
+        AccountEntity user = repository.findByPhone(name).orElseThrow(
+                () -> new NotFoundEntityException("Tài khoản", name));
+
+        return profileClient.getProfile(user.getId());
     }
 
     private AccountEntity createAccount(RegisterFormRequest request) {
