@@ -24,6 +24,12 @@ public class AccountEntity extends BaseEntity {
     @Column(name = "password")
     String password;
 
+    @Column(name = "email", unique = true)
+    String email;
+
+    @Column(name = "email_verified")
+    String emailVerified;
+
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
             name = "account_role_mapping",
