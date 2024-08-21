@@ -10,3 +10,7 @@ spring:
           uri: http://localhost:8081
           predicates:
             - Path=/profile-service/api/v1/accounts/**
+        - id: notification-service
+          uri: http://localhost:8082
+          predicates:
+            - Path=/notification-service/**

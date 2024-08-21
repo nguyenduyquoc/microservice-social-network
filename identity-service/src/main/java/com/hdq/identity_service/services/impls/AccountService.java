@@ -1,5 +1,6 @@
 package com.hdq.identity_service.services.impls;
 
+import com.hdq.event.dto.NotificationEvent;
 import com.hdq.identity_service.controllers.accounts.RegisterFormRequest;
 import com.hdq.identity_service.core.BaseRepository;
 import com.hdq.identity_service.dtos.AccountDTO;
@@ -20,9 +21,12 @@ import com.hdq.identity_service.utils.SetUtil;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -44,6 +48,11 @@ public class AccountService implements IAccountService {
     MessageSource messageSource;
     ModelMapper modelMapper;
     ProfileClient profileClient;
+    KafkaTemplate<String, Object> kafkaTemplate;
+
+    @Value(value = "${app.kafka.account-event.topic-name}")
+    @NonFinal
+    String topicName;
 
     @Override
     public BaseRepository<AccountEntity> getRepository() {
@@ -72,6 +81,16 @@ public class AccountService implements IAccountService {
         // send api to profile service
         sendApiToProfileService(userAccount, request);
 
+        //publish message to kafka
+        NotificationEvent notificationEvent = NotificationEvent.builder()
+                .channel("EMAIL")
+                .receiver(request.getEmail())
+                .subject("Welcome to HDQ")
+                .body("Hello, " + request.getPhone())
+                .build();
+
+        kafkaTemplate.send(topicName, notificationEvent);
+
         return (AccountDTO) mapper.toDTO(userAccount);
 
     }
@@ -97,6 +116,8 @@ public class AccountService implements IAccountService {
 
         // send api to profile service
         sendApiToProfileService(adminAccount, request);
+        //publish message to kafka
+        kafkaTemplate.send(topicName, "Welcome our new admin " + adminAccount.getPhone());
 
         return (AccountDTO) mapper.toDTO(adminAccount);
     }
