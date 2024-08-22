@@ -182,10 +182,10 @@ public class AccountService implements IAccountService {
     @Override
     public Object getMyInfo() throws NotFoundEntityException {
         var context = SecurityContextHolder.getContext();
-        String name = context.getAuthentication().getName();
+        Long accountId = Long.valueOf(context.getAuthentication().getName());
 
-        AccountEntity user = repository.findByPhone(name).orElseThrow(
-                () -> new NotFoundEntityException("Tài khoản", name));
+        AccountEntity user = repository.findById(accountId).orElseThrow(
+                () -> new NotFoundEntityException("Tài khoản", accountId));
 
         return profileClient.getProfile(user.getId());
     }

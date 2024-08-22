@@ -169,7 +169,7 @@ public class AuthenticationService {
 
         // create payload
         JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
-                .subject(account.getPhone())
+                .subject(String.valueOf(account.getId()))
                 .issuer("nguyenduyquoc.com")
                 .issueTime(new Date())
                 .expirationTime(new Date(
