@@ -19,6 +19,7 @@ public class PostDTO {
     String id;
     String content;
     String accountId;
+    String created;
     Instant createDate;
     Instant modifiedDate;
 

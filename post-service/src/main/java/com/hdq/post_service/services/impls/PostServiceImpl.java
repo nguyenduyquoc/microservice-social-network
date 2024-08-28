@@ -6,6 +6,7 @@ import com.hdq.post_service.dtos.responses.PageResponse;
 import com.hdq.post_service.entities.PostEntity;
 import com.hdq.post_service.exception.NotFoundEntityException;
 import com.hdq.post_service.repositories.PostRepository;
+import com.hdq.post_service.services.DateTimeFormatter;
 import com.hdq.post_service.services.IPostService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,7 @@ public class PostServiceImpl implements IPostService {
 
     PostRepository repository;
     ModelMapper modelMapper;
+    DateTimeFormatter dateTimeFormatter;
 
     @Override
     public PostDTO create(PostFormRequest request) {
@@ -55,14 +57,18 @@ public class PostServiceImpl implements IPostService {
         Pageable pageable = PageRequest.of(page-1, size, sort);
         Page<PostEntity> pageData = repository.findByAccountId(Long.valueOf(authentication.getName()), pageable);
 
+        var  postList = pageData.getContent().stream().map(postEntity -> {
+            var postDTO =  modelMapper.map(postEntity, PostDTO.class);
+            postDTO.setCreated(dateTimeFormatter.format(postEntity.getCreateDate()));
+            return postDTO;
+        }).toList();
+
         return PageResponse.<PostDTO>builder()
                 .currentPage(page)
                 .pageSize(pageData.getSize())
                 .totalPages(pageData.getTotalPages())
                 .totalElements(pageData.getTotalElements())
-                .data(pageData.getContent().stream().map(
-                        postEntity -> modelMapper.map(postEntity, PostDTO.class)
-                ).toList())
+                .data(postList)
                 .build();
     }
 
