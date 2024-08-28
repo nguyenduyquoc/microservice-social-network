@@ -10,9 +10,9 @@ public interface IAccountProfileService {
 
     AccountProfileDTO createProfile(AccountProfileCreateFormRequest request);
 
-    AccountProfileDTO getProfile(String id) throws NotFoundEntityException;
+    AccountProfileDTO getMyProfile() throws NotFoundEntityException;
 
     List<AccountProfileDTO> getAllProfiles();
 
-    AccountProfileDTO getProfileByUserId(Long id);
+    AccountProfileDTO getProfileByAccountId(Long accountId);
 }

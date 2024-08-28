@@ -26,7 +26,7 @@ import java.time.Instant;
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @RequiredArgsConstructor
 @Slf4j
-public class PostService implements IPostService {
+public class PostServiceImpl implements IPostService {
 
     PostRepository repository;
     ModelMapper modelMapper;

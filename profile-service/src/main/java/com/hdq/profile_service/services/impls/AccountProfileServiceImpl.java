@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,7 +20,7 @@ import java.util.List;
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @RequiredArgsConstructor
 @Slf4j
-public class AccountProfileService implements IAccountProfileService {
+public class AccountProfileServiceImpl implements IAccountProfileService {
 
     AccountProfileRepository repository;
     ModelMapper modelMapper;
@@ -32,10 +33,13 @@ public class AccountProfileService implements IAccountProfileService {
     }
 
     @Override
-    public AccountProfileDTO getProfile(String id) throws NotFoundEntityException {
-        AccountProfileEntity accountProfile = repository.findById(id).orElseThrow(
-                () -> new NotFoundEntityException("Profile", id)
-        );
+    public AccountProfileDTO getMyProfile() throws NotFoundEntityException {
+        Long accountId = Long.valueOf(SecurityContextHolder.getContext().getAuthentication().getName());
+
+        AccountProfileEntity accountProfile = repository.findByAccountId(accountId);
+        if (accountProfile == null)
+            throw new NotFoundEntityException("Profile", accountId);
+
         return modelMapper.map(accountProfile, AccountProfileDTO.class);
     }
 
@@ -49,8 +53,10 @@ public class AccountProfileService implements IAccountProfileService {
     }
 
     @Override
-    public AccountProfileDTO getProfileByUserId(Long id) {
-        AccountProfileEntity accountProfile = repository.findByAccountId(id);
+    public AccountProfileDTO getProfileByAccountId(Long accountId) {
+
+        AccountProfileEntity accountProfile = repository.findByAccountId(accountId);
         return modelMapper.map(accountProfile, AccountProfileDTO.class);
+
     }
 }

@@ -27,7 +27,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,7 +37,7 @@ import java.util.*;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Slf4j
-public class AccountService implements IAccountService {
+public class AccountServiceImpl implements IAccountService {
 
     AccountRepositoryImpl repository;
     RoleRepositoryImpl roleRepository;
@@ -177,17 +176,6 @@ public class AccountService implements IAccountService {
         account.setRoles(roleEntities);
 
         return repository.save(account);
-    }
-
-    @Override
-    public Object getMyInfo() throws NotFoundEntityException {
-        var context = SecurityContextHolder.getContext();
-        Long accountId = Long.valueOf(context.getAuthentication().getName());
-
-        AccountEntity user = repository.findById(accountId).orElseThrow(
-                () -> new NotFoundEntityException("Tài khoản", accountId));
-
-        return profileClient.getProfile(user.getId());
     }
 
     private AccountEntity createAccount(RegisterFormRequest request) {

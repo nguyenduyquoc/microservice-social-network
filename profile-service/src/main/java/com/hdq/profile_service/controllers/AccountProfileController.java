@@ -1,11 +1,9 @@
 package com.hdq.profile_service.controllers;
 
 import com.hdq.profile_service.core.BaseResponse;
-import com.hdq.profile_service.dtos.requests.AccountProfileCreateFormRequest;
 import com.hdq.profile_service.exceptions.NotFoundEntityException;
 import com.hdq.profile_service.services.IAccountProfileService;
 import com.hdq.profile_service.utils.Constants;
-import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -13,7 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = Constants.REQUEST_MAPPING_PREFIX  + Constants.VERSION_API_V1)
+@RequestMapping(value = Constants.REQUEST_MAPPING_PREFIX  + Constants.VERSION_API_V1 + "/profiles")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
 public class AccountProfileController {
@@ -22,18 +20,24 @@ public class AccountProfileController {
 
 
     @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'ADMIN')")
-    @GetMapping(path = "/accounts")
+    @GetMapping(path = "")
     BaseResponse getAllAccountProfiles() {
 
         return BaseResponse.success(accountProfileService.getAllProfiles());
     }
 
 
-    @GetMapping(path = "/accounts/{profileId}")
-    BaseResponse getAccountProfile(@PathVariable(name = "profileId") String id) {
+    @GetMapping(path = "/{accountId}")
+    BaseResponse getAccountProfileById(@PathVariable(name = "accountId") Long accountId) {
 
+        return BaseResponse.success(accountProfileService.getProfileByAccountId(accountId));
+    }
+
+
+    @GetMapping(path = "/me")
+    BaseResponse getAccountProfile() {
         try {
-            return BaseResponse.success(accountProfileService.getProfile(id));
+            return BaseResponse.success(accountProfileService.getMyProfile());
         } catch (NotFoundEntityException e) {
             return BaseResponse.throwException(e);
         }

@@ -34,7 +34,7 @@ import java.util.*;
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
-public class RoleServiceImpls implements IRoleService {
+public class RoleServiceImpl implements IRoleService {
 
     RoleRepositoryImpl repository;
     AccountRepositoryImpl accountRepository;

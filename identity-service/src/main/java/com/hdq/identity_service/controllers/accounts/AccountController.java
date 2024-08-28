@@ -61,15 +61,6 @@ public class AccountController implements BaseRestController<AccountEntity> {
         return BaseResponse.created(service.createAdmin(request));
     }
 
-    @GetMapping(path = "/my-info")
-    public Object showMyInfo() {
-        try {
-            return BaseResponse.success(service.getMyInfo());
-        } catch (NotFoundEntityException e) {
-            return BaseResponse.throwException(e);
-        }
-    }
-
 
     @PutMapping(path = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public BaseResponse update(@Valid @RequestBody RegisterFormRequest request, Long id) {

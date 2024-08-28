@@ -3,7 +3,7 @@ package com.hdq.api_gateway.configs;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hdq.api_gateway.core.BaseResponse;
-import com.hdq.api_gateway.services.IdentityService;
+import com.hdq.api_gateway.services.IIdentityService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -31,7 +31,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AuthenticationFilter implements GlobalFilter, Ordered {
 
-    IdentityService identityService;
+    IIdentityService identityService;
     ObjectMapper objectMapper;
 
     String[] publicEndpoints = {
@@ -74,6 +74,7 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
                 s -> request.getURI().getPath().matches(s)
         );
     }
+
     Mono<Void> unauthenticated(ServerHttpResponse response) {
         BaseResponse apiResponse = BaseResponse.unauthorized("Unauthenticated");
 

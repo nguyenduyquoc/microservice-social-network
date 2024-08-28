@@ -27,7 +27,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http.authorizeHttpRequests(request -> request
-                .requestMatchers("/api/v1/internal/accounts").permitAll()
+                .requestMatchers("/api/internal/v1/profiles").permitAll()
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .anyRequest().authenticated());
 

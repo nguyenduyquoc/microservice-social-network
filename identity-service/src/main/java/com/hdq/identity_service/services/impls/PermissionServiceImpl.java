@@ -24,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
-public class PermissionServiceImpls implements IPermissionService {
+public class PermissionServiceImpl implements IPermissionService {
 
     PermissionRepositoryImpl repository;
     RoleRepositoryImpl roleRepository;
